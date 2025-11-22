@@ -40,15 +40,18 @@ let handler = async (m, { conn, usedPrefix }) => {
     })
 
     for (let tag of orderedTags) {
-      txt += `\n*${tag.toUpperCase()}*\n`
+      txt += `\n┏━━━━━━━━━━━━━━━━━━┓\n`
+      txt += `┃ ᰔᩚ *${tag.toUpperCase()}* \n`
+      txt += `┣━━━━━━━━━━━━━━━━━━┫\n`
       for (let plugin of menu[tag]) {
         if (!Array.isArray(plugin.help)) continue
         for (let cmd of plugin.help) {
           if (Array.isArray(cmd)) cmd = cmd[0]
           if (!cmd) continue
-          txt += `✎ ${usedPrefix}${cmd}\n`
+          txt += `┃ ❑ ${usedPrefix}${cmd}\n`
         }
       }
+      txt += `┗━━━━━━━━━━━━━━━━━━\n`
     }
 
     let thumbnailBuffer = null
