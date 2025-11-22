@@ -22,7 +22,7 @@ await m.react('✖️')
 return conn.reply(m.chat, `⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${error.message}`, m)
 }}
 
-handler.tags = ['descargas']
+handler.tags = ['download']
 handler.help = ['apkmod']
 handler.command = ['apk', 'modapk', 'aptoide']
 handler.group = true
