@@ -109,23 +109,45 @@
 
     </main>
 
-    <!-- Logs Modal -->
-    <div id="logs-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
-        <div class="bg-gray-900 rounded-xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col m-4 transform scale-95 transition-transform duration-300">
-            <div class="flex justify-between items-center p-4 border-b border-gray-700 bg-gray-800 rounded-t-xl">
-                <h3 class="text-gray-100 font-mono flex items-center">
-                    <i class="fa-solid fa-terminal text-green-500 mr-2"></i> Terminal: <span id="modal-bot-id" class="ml-2 text-blue-400"></span>
-                </h3>
-                <button onclick="closeLogs()" class="text-gray-400 hover:text-white transition-colors">
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center p-6 border-b border-gray-100">
+                <h3 class="text-xl font-bold text-gray-800">Personalizar SubBot</h3>
+                <button onclick="closeSettings()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fa-solid fa-times text-xl"></i>
                 </button>
             </div>
-            <div id="logs-content" class="flex-grow overflow-y-auto p-4 terminal text-sm text-gray-300 font-mono space-y-1">
-                <!-- Logs go here -->
-            </div>
-            <div class="p-3 bg-gray-800 border-t border-gray-700 text-xs text-gray-500 flex justify-between items-center rounded-b-xl">
-                <span><span class="w-2 h-2 inline-block bg-green-500 rounded-full animate-pulse mr-1"></span> Live connection</span>
-                <span class="text-gray-600">Auto-scroll enabled</span>
+            <div class="p-6 space-y-6">
+                <input type="hidden" id="settings-bot-id">
+
+                <!-- Name Setting -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Bot</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="settings-name" class="flex-1 rounded-lg border-gray-300 focus:ring-purple-500 focus:border-purple-500" placeholder="Nuevo nombre">
+                        <button onclick="saveName()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fa-solid fa-save"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">El cambio se reflejará inmediatamente.</p>
+                </div>
+
+                <!-- Banner Setting -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Banner del Bot</label>
+                    <div class="flex items-center justify-center w-full">
+                        <label for="settings-banner" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <i class="fa-solid fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
+                                <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click para subir</span> o arrastra</p>
+                                <p class="text-xs text-gray-500">JPG, PNG, WEBP</p>
+                            </div>
+                            <input id="settings-banner" type="file" class="hidden" accept="image/*" onchange="uploadBanner(this)" />
+                        </label>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1 text-center" id="upload-status"></p>
+                </div>
             </div>
         </div>
     </div>
@@ -233,8 +255,8 @@
                                 </span>
                             </div>
                             <div class="flex space-x-2 mt-4">
-                                <button onclick="viewLogs('${bot.id}')" class="flex-1 bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors flex justify-center items-center">
-                                    <i class="fa-solid fa-terminal mr-2"></i> Logs
+                                <button onclick="openSettings('${bot.id}', '${bot.name}')" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors flex justify-center items-center">
+                                    <i class="fa-solid fa-cog mr-2"></i> Personalizar
                                 </button>
                                 <button onclick="stopBot('${bot.id}')" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium py-2 px-3 rounded-lg transition-colors flex justify-center items-center border border-red-200">
                                     <i class="fa-solid fa-power-off mr-2"></i> Detener
@@ -277,64 +299,72 @@
             }
         }
 
-        // Logs Logic
-        let logsInterval;
-        let currentBotId;
-
-        function viewLogs(id) {
-            currentBotId = id;
-            document.getElementById('modal-bot-id').textContent = `+${id}`;
-            const modal = document.getElementById('logs-modal');
+        // Settings Logic
+        function openSettings(id, currentName) {
+            document.getElementById('settings-bot-id').value = id;
+            document.getElementById('settings-name').value = currentName;
+            const modal = document.getElementById('settings-modal');
             modal.classList.remove('hidden');
-            // Trigger reflow
             void modal.offsetWidth;
             modal.classList.remove('opacity-0');
             modal.querySelector('div').classList.remove('scale-95');
-
-            fetchLogs();
-            logsInterval = setInterval(fetchLogs, 2000);
         }
 
-        function closeLogs() {
-            const modal = document.getElementById('logs-modal');
+        function closeSettings() {
+            const modal = document.getElementById('settings-modal');
             modal.classList.add('opacity-0');
             modal.querySelector('div').classList.add('scale-95');
-
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                clearInterval(logsInterval);
-                currentBotId = null;
-            }, 300);
+            setTimeout(() => modal.classList.add('hidden'), 300);
         }
 
-        async function fetchLogs() {
-            if (!currentBotId) return;
+        async function saveName() {
+            const id = document.getElementById('settings-bot-id').value;
+            const name = document.getElementById('settings-name').value;
+
             try {
-                const res = await fetch(`/api/subbot-logs/${currentBotId}`);
+                const res = await fetch('/api/settings/name', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, name })
+                });
                 const data = await res.json();
-                const container = document.getElementById('logs-content');
-
-                if (data.logs && data.logs.length > 0) {
-                    const isAtBottom = container.scrollHeight - container.scrollTop === container.clientHeight;
-
-                    container.innerHTML = data.logs.map(log => {
-                        // Simple coloring based on keywords
-                        let colorClass = 'text-gray-300';
-                        if (log.includes('Error')) colorClass = 'text-red-400';
-                        if (log.includes('Conectado')) colorClass = 'text-green-400';
-                        if (log.includes('Código')) colorClass = 'text-yellow-400';
-
-                        return `<div class="${colorClass} hover:bg-gray-800 p-0.5 rounded">${log}</div>`;
-                    }).join('');
-
-                    if (isAtBottom) {
-                        container.scrollTop = container.scrollHeight;
-                    }
+                if (data.success) {
+                    Swal.fire('Éxito', 'Nombre actualizado', 'success');
+                    loadBots();
                 } else {
-                    container.innerHTML = '<div class="text-gray-500 italic text-center mt-4">Esperando logs...</div>';
+                    Swal.fire('Error', data.error, 'error');
                 }
             } catch (e) {
-                console.error(e);
+                Swal.fire('Error', 'Error de conexión', 'error');
+            }
+        }
+
+        async function uploadBanner(input) {
+            const id = document.getElementById('settings-bot-id').value;
+            const file = input.files[0];
+            if (!file) return;
+
+            const status = document.getElementById('upload-status');
+            status.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Subiendo...';
+
+            const formData = new FormData();
+            formData.append('id', id);
+            formData.append('file', file);
+
+            try {
+                const res = await fetch('/api/settings/banner', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.success) {
+                    status.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-check"></i> Banner actualizado</span>`;
+                    Swal.fire('Éxito', 'Banner actualizado', 'success');
+                } else {
+                    status.innerHTML = `<span class="text-red-500">Error: ${data.error}</span>`;
+                }
+            } catch (e) {
+                status.innerHTML = `<span class="text-red-500">Error de conexión</span>`;
             }
         }
 
