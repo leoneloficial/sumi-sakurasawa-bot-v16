@@ -22,7 +22,7 @@ global.author = '✿ 𝐌𝐚𝐝𝐞 𝐰𝐢𝐭𝐡 𝐂𝐥𝐮𝐛 𝐀.�
 global.etiqueta = '𝐂𝐥𝐮𝐛 𝐀.𝐘.𝐌 ✎'
 global.currency = '€ 𝐄𝐮𝐫𝐨𝐬'
 global.banner = "https://qu.ax/TkbrV.jpg"
-global.icono = "https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1742678797993.jpeg"
+global.icono = "https://qu.ax/JBfzy.jpg"
 global.catalogo = fs.readFileSync('./lib/catalogo.jpg')
 
 global.group = "https://chat.whatsapp.com/HaKf6ezcwdbGzmH782eBal"
