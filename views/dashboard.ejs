@@ -3,46 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - SubBot Manager</title>
+    <title>ZeroTwo - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 2rem; margin: 0; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }
-        h1, h2 { color: #333; }
-        .stat { font-size: 1.2rem; margin-bottom: 1rem; color: #555; }
-        .stat span { font-weight: bold; color: #00a884; }
-        form { display: flex; flex-direction: column; margin-top: 2rem; }
-        input { margin-bottom: 1rem; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; }
-        button { padding: 0.8rem; background: #00a884; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-        button:hover { background: #008f6f; }
-        .logout { color: #d9534f; text-decoration: none; }
-        .code-display { margin-top: 2rem; padding: 1.5rem; background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 4px; text-align: center; }
-        .code-text { font-size: 2rem; letter-spacing: 5px; font-family: monospace; font-weight: bold; color: #333; margin: 1rem 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .terminal { font-family: 'Fira Code', monospace; }
+        /* Scrollbar custom */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
     </style>
 </head>
-<body>
-    <div class="header">
-        <h2>Bienvenido, <%= username %></h2>
-        <a href="/logout" class="logout">Cerrar Sesión</a>
-    </div>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
 
-    <div class="card">
-        <h1>Gestor de SubBots</h1>
-        <div class="stat">SubBots Conectados: <span><%= connectedSubbots %></span></div>
-
-        <form action="/request-code" method="POST">
-            <label for="phoneNumber">Ingresa tu número (con código de país, sin +)</label>
-            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Ej: 521234567890" required>
-            <button type="submit">Pedir Código</button>
-        </form>
-
-        <% if (code) { %>
-            <div class="code-display">
-                <h3>Tu Código de Vinculación:</h3>
-                <div class="code-text"><%= code %></div>
-                <p>Copia este código y úsalo en WhatsApp > Dispositivos vinculados > Vincular con número de teléfono.</p>
+    <!-- Navbar -->
+    <nav class="glass sticky top-0 z-50 border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-pink-500">
+                        <i class="fa-solid fa-robot mr-2 text-red-500"></i>ZeroTwo Manager
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center text-sm font-medium text-gray-600">
+                        <i class="fa-regular fa-user mr-2"></i> <%= username %>
+                    </div>
+                    <a href="/logout" class="text-sm font-medium text-red-500 hover:text-red-700 transition-colors">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Salir
+                    </a>
+                </div>
             </div>
-        <% } %>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- Top Section: Connect New Bot -->
+        <div class="bg-white rounded-2xl shadow-sm p-6 mb-8 border border-gray-100">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fa-solid fa-plus-circle text-green-500 mr-2"></i> Nuevo SubBot
+            </h2>
+            <div class="flex flex-col md:flex-row gap-4 items-end">
+                <div class="flex-grow w-full">
+                    <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-1">Número de WhatsApp</label>
+                    <div class="relative rounded-md shadow-sm">
+                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fa-solid fa-phone text-gray-400"></i>
+                        </div>
+                        <input type="text" name="phoneNumber" id="phoneNumber"
+                            class="block w-full rounded-lg border-gray-300 pl-10 focus:border-purple-500 focus:ring-purple-500 sm:text-sm py-3 bg-gray-50 border transition-all"
+                            placeholder="Ej: 521234567890 (Con código de país)">
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">Ingresa el número sin el símbolo '+'</p>
+                </div>
+                <button onclick="requestCode()" id="btn-connect"
+                    class="w-full md:w-auto bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                    <i class="fa-solid fa-link mr-2"></i> Vincular
+                </button>
+            </div>
+
+            <!-- Code Display Area -->
+            <div id="code-container" class="hidden mt-6 p-6 bg-indigo-50 rounded-xl border border-indigo-100 text-center animate-fade-in">
+                <h3 class="text-indigo-800 font-medium mb-2">Código de Vinculación</h3>
+                <div id="code-display" class="text-4xl font-mono font-bold text-indigo-600 tracking-[0.2em] my-4 select-all cursor-pointer" title="Click para copiar" onclick="copyCode(this)">
+                    ---
+                </div>
+                <p class="text-sm text-indigo-600">
+                    Ve a <span class="font-semibold">WhatsApp > Dispositivos Vinculados > Vincular un dispositivo > Vincular con número de teléfono</span> e ingresa este código.
+                </p>
+                <div id="timer" class="mt-2 text-xs text-red-500 font-mono"></div>
+            </div>
+        </div>
+
+        <!-- Active Bots Grid -->
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+            <i class="fa-solid fa-server text-blue-500 mr-2"></i> Mis SubBots Activos
+        </h2>
+
+        <div id="bots-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Bots will be loaded here via JS -->
+            <div class="col-span-full text-center py-12 text-gray-400">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3"></i>
+                <p>Cargando bots...</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Logs Modal -->
+    <div id="logs-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="bg-gray-900 rounded-xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col m-4 transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700 bg-gray-800 rounded-t-xl">
+                <h3 class="text-gray-100 font-mono flex items-center">
+                    <i class="fa-solid fa-terminal text-green-500 mr-2"></i> Terminal: <span id="modal-bot-id" class="ml-2 text-blue-400"></span>
+                </h3>
+                <button onclick="closeLogs()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="logs-content" class="flex-grow overflow-y-auto p-4 terminal text-sm text-gray-300 font-mono space-y-1">
+                <!-- Logs go here -->
+            </div>
+            <div class="p-3 bg-gray-800 border-t border-gray-700 text-xs text-gray-500 flex justify-between items-center rounded-b-xl">
+                <span><span class="w-2 h-2 inline-block bg-green-500 rounded-full animate-pulse mr-1"></span> Live connection</span>
+                <span class="text-gray-600">Auto-scroll enabled</span>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // --- API Interaction ---
+
+        async function requestCode() {
+            const phoneInput = document.getElementById('phoneNumber');
+            const btn = document.getElementById('btn-connect');
+            const codeContainer = document.getElementById('code-container');
+            const codeDisplay = document.getElementById('code-display');
+            const timerDisplay = document.getElementById('timer');
+
+            const phone = phoneInput.value.trim();
+            if (!phone) return Swal.fire('Error', 'Por favor ingresa un número válido', 'error');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Generando...';
+
+            try {
+                const res = await fetch('/request-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: phone })
+                });
+                const data = await res.json();
+
+                if (data.success && data.code) {
+                    codeContainer.classList.remove('hidden');
+                    codeDisplay.textContent = data.code;
+                    startTimer(45, timerDisplay); // Assuming ~45s validity
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Código Generado',
+                        text: 'Usa el código para vincular tu WhatsApp rápidamente.',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                    loadBots(); // Refresh list just in case
+                } else {
+                    Swal.fire('Error', data.error || 'No se pudo generar el código', 'error');
+                }
+            } catch (e) {
+                Swal.fire('Error', 'Error de red', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-link mr-2"></i> Vincular';
+            }
+        }
+
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            const interval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = "Expira en: " + minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    display.textContent = "Código expirado";
+                }
+            }, 1000);
+        }
+
+        function copyCode(el) {
+            navigator.clipboard.writeText(el.textContent.trim());
+            const original = el.style.color;
+            el.style.color = '#22c55e'; // Green
+            setTimeout(() => el.style.color = '', 500);
+            const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 1500 });
+            Toast.fire({ icon: 'success', title: 'Copiado al portapapeles' });
+        }
+
+        async function loadBots() {
+            const grid = document.getElementById('bots-grid');
+            try {
+                const res = await fetch('/api/my-subbots');
+                const bots = await res.json();
+
+                if (bots.length === 0) {
+                    grid.innerHTML = `
+                        <div class="col-span-full text-center py-12 bg-white rounded-xl border border-gray-200 border-dashed">
+                            <i class="fa-solid fa-robot text-gray-300 text-5xl mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-600">No tienes SubBots activos</h3>
+                            <p class="text-gray-400 text-sm">Vincula un nuevo número para comenzar.</p>
+                        </div>`;
+                    return;
+                }
+
+                grid.innerHTML = bots.map(bot => `
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 text-lg">${bot.name}</h3>
+                                    <p class="text-sm text-gray-500 font-mono">+${bot.id}</p>
+                                </div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span> Online
+                                </span>
+                            </div>
+                            <div class="flex space-x-2 mt-4">
+                                <button onclick="viewLogs('${bot.id}')" class="flex-1 bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors flex justify-center items-center">
+                                    <i class="fa-solid fa-terminal mr-2"></i> Logs
+                                </button>
+                                <button onclick="stopBot('${bot.id}')" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium py-2 px-3 rounded-lg transition-colors flex justify-center items-center border border-red-200">
+                                    <i class="fa-solid fa-power-off mr-2"></i> Detener
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (e) {
+                console.error(e);
+                grid.innerHTML = '<div class="col-span-full text-center text-red-500">Error cargando bots</div>';
+            }
+        }
+
+        async function stopBot(id) {
+            const result = await Swal.fire({
+                title: '¿Detener SubBot?',
+                text: "Se cerrará la sesión y tendrás que vincular nuevamente.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, detener',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    await fetch('/api/stop-subbot', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id })
+                    });
+                    Swal.fire('Detenido', 'El bot ha sido desconectado.', 'success');
+                    loadBots();
+                } catch (e) {
+                    Swal.fire('Error', 'No se pudo detener el bot', 'error');
+                }
+            }
+        }
+
+        // Logs Logic
+        let logsInterval;
+        let currentBotId;
+
+        function viewLogs(id) {
+            currentBotId = id;
+            document.getElementById('modal-bot-id').textContent = `+${id}`;
+            const modal = document.getElementById('logs-modal');
+            modal.classList.remove('hidden');
+            // Trigger reflow
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            modal.querySelector('div').classList.remove('scale-95');
+
+            fetchLogs();
+            logsInterval = setInterval(fetchLogs, 2000);
+        }
+
+        function closeLogs() {
+            const modal = document.getElementById('logs-modal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.add('scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                clearInterval(logsInterval);
+                currentBotId = null;
+            }, 300);
+        }
+
+        async function fetchLogs() {
+            if (!currentBotId) return;
+            try {
+                const res = await fetch(`/api/subbot-logs/${currentBotId}`);
+                const data = await res.json();
+                const container = document.getElementById('logs-content');
+
+                if (data.logs && data.logs.length > 0) {
+                    const isAtBottom = container.scrollHeight - container.scrollTop === container.clientHeight;
+
+                    container.innerHTML = data.logs.map(log => {
+                        // Simple coloring based on keywords
+                        let colorClass = 'text-gray-300';
+                        if (log.includes('Error')) colorClass = 'text-red-400';
+                        if (log.includes('Conectado')) colorClass = 'text-green-400';
+                        if (log.includes('Código')) colorClass = 'text-yellow-400';
+
+                        return `<div class="${colorClass} hover:bg-gray-800 p-0.5 rounded">${log}</div>`;
+                    }).join('');
+
+                    if (isAtBottom) {
+                        container.scrollTop = container.scrollHeight;
+                    }
+                } else {
+                    container.innerHTML = '<div class="text-gray-500 italic text-center mt-4">Esperando logs...</div>';
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Initial Load
+        loadBots();
+        setInterval(loadBots, 10000); // Refresh list periodically
+
+    </script>
 </body>
 </html>

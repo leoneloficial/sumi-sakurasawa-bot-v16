@@ -3,34 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - SubBot Manager</title>
+    <title>Registro - ZeroTwo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h1 { text-align: center; color: #333; }
-        form { display: flex; flex-direction: column; }
-        input { margin-bottom: 1rem; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; }
-        button { padding: 0.8rem; background: #00a884; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-        button:hover { background: #008f6f; }
-        .error { color: red; text-align: center; margin-bottom: 1rem; }
-        .link { text-align: center; margin-top: 1rem; }
-        a { color: #00a884; text-decoration: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Registrarse</h1>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-2xl transform transition-all hover:scale-[1.01]">
+        <div class="text-center">
+            <div class="mx-auto h-16 w-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fa-solid fa-user-plus text-3xl text-green-600"></i>
+            </div>
+            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+                Crear Cuenta
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Únete para gestionar tus bots
+            </p>
+        </div>
+
         <% if (error) { %>
-            <div class="error"><%= error %></div>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md flex items-center">
+                <i class="fa-solid fa-circle-exclamation text-red-500 mr-3"></i>
+                <p class="text-sm text-red-700"><%= error %></p>
+            </div>
         <% } %>
-        <form action="/register" method="POST">
-            <input type="text" name="username" placeholder="Usuario" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            <button type="submit">Registrarse</button>
+
+        <form class="mt-8 space-y-6" action="/register" method="POST">
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-user text-gray-400"></i>
+                        </div>
+                        <input id="username" name="username" type="text" required class="appearance-none rounded-lg relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm transition-colors" placeholder="Elige un usuario">
+                    </div>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-lock text-gray-400"></i>
+                        </div>
+                        <input id="password" name="password" type="password" required class="appearance-none rounded-lg relative block w-full px-3 py-3 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm transition-colors" placeholder="••••••••">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all shadow-lg hover:shadow-xl">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <i class="fa-solid fa-user-check text-green-400 group-hover:text-green-300 transition-colors"></i>
+                    </span>
+                    Registrarse
+                </button>
+            </div>
         </form>
-        <div class="link">
-            <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+
+        <div class="text-center mt-4">
+            <p class="text-sm text-gray-600">
+                ¿Ya tienes cuenta? <a href="/login" class="font-medium text-green-600 hover:text-green-500 hover:underline">Inicia sesión aquí</a>
+            </p>
         </div>
     </div>
+
 </body>
 </html>
