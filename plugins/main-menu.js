@@ -49,7 +49,7 @@ let handler = async (m, { conn, usedPrefix }) => {
         for (let cmd of plugin.help) {
           if (Array.isArray(cmd)) cmd = cmd[0]
           if (!cmd) continue
-          txt += `┃ ❑ ${usedPrefix}${cmd}\n`
+          txt += `┃ *❑* ${usedPrefix}${cmd}\n`
         }
       }
       txt += `┗━━━━━━━━━━━━━━━━━━\n`
@@ -75,7 +75,7 @@ let handler = async (m, { conn, usedPrefix }) => {
         message: {
           interactiveMessage: {
             body: { 
-              text: "꒷︶꒷꒥꒷‧₊˚૮꒰˵•ᵜ•˵꒱ა‧₊˚꒷︶꒷꒥꒷" 
+              text: "> *꒷︶꒷꒥꒷‧₊˚૮꒰˵•ᵜ•˵꒱ა‧₊˚꒷︶꒷꒥꒷*" 
             },
             footer: { 
               text: txt 
@@ -89,9 +89,9 @@ let handler = async (m, { conn, usedPrefix }) => {
                 {
                   name: "cta_url",
                   buttonParamsJson: JSON.stringify({
-                    display_text: "Canal",
-                    url: "https://chat.whatsapp.com/Ca25rmjW0qKJRIw9rzMaYA?mode=wwt",
-                    merchant_url: "https://chat.whatsapp.com/Ca25rmjW0qKJRIw9rzMaYA?mode=wwt"
+                    display_text: "☆ Canal",
+                    url: "",
+                    merchant_url: ""
                   })
                 }
               ],
