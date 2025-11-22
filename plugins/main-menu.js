@@ -42,7 +42,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     for (let tag of orderedTags) {
       txt += `\n┏━━━━━━━━━━━━━━━━━━┓\n`
       txt += `┃ ᰔᩚ *${tag.toUpperCase()}* \n`
-      txt += `┣━━━━━━━━━━━━━━━━━━┫\n`
+      txt += `┃\n`
       for (let plugin of menu[tag]) {
         if (!Array.isArray(plugin.help)) continue
         for (let cmd of plugin.help) {
