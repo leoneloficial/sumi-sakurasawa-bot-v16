@@ -89,7 +89,7 @@ let handler = async (m, { conn, usedPrefix }) => {
                 {
                   name: "cta_url",
                   buttonParamsJson: JSON.stringify({
-                    display_text: "☆ Canal",
+                    display_text: "☆ 𝗚𝗿𝘂𝗽𝗼 𝗢𝗳𝗶𝗰𝗶𝗮𝗹",
                     url: "https://chat.whatsapp.com/JcMa6Incw3g4YmNo4iim3Q?mode=hqrt3",
                     merchant_url: "https://chat.whatsapp.com/JcMa6Incw3g4YmNo4iim3Q?mode=hqrt3"
                   })
