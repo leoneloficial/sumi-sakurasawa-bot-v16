@@ -24,7 +24,7 @@ conn.reply(m.chat, `⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}rep
 }}
 
 handler.help = ['ytsearch']
-handler.tags = ['descargas']
+handler.tags = ['download']
 handler.command = ['ytbuscar', 'ytsearch', 'yts']
 handler.group = true
 
