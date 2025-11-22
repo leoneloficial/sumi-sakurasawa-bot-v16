@@ -44,7 +44,7 @@ conn.reply(m.chat, `ꕥ No tienes *¥${formatNumber(count)} ${currency}* para ap
 }}
 
 handler.help = ['apostar']
-handler.tags = ['economy']
+handler.tags = ['rpg']
 handler.command = ['apostar', 'casino']
 handler.group = true
 
