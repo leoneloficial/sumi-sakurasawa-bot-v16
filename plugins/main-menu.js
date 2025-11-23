@@ -22,14 +22,14 @@ let handler = async (m, { conn, usedPrefix }) => {
     let uptimeStr = `${hours}h ${minutes}m ${seconds}s`
 
     let botNameToShow = typeof global.botname === "string" ? global.botname : "Bot"
-    let bannerUrl = global.banner
+    let bannerUrl = conn.botBanner
 
     if (Array.isArray(bannerUrl)) bannerUrl = bannerUrl[0]
     if (typeof bannerUrl !== "string") bannerUrl = ""
 
     let rolBot = conn.user.jid === global.conn.user.jid ? 'Principal 🅥' : 'Sub-Bot 🅑'
 
-    let txt = `✿ *¡Hola! Soy ${botNameToShow}* ${rolBot}\n\n`
+    let txt = `✿ *¡Hola! Soy ${conn.botName}* ${rolBot}\n\n`
     txt += `✎ *Actividad:* ${uptimeStr}\n`
     txt += `✎ *Sistema:* Multi Device\n`
     txt += `✎ *Fecha:* ${moment().tz('America/Bogota').format('DD/MM/YYYY')}\n\n`
