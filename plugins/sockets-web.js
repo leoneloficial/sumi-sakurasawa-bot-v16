@@ -29,7 +29,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = express()
-const PORT = 10009
+const PORT = 5003
 const COOKIE_SECRET = 'your_very_secure_secret_key_here'
 
 // Middleware
