@@ -1,4 +1,6 @@
 import fetch from 'node-fetch'
+// Importaciones necesarias para los botones (asegúrate de tener @whiskeysockets/baileys o @adiwajshing/baileys)
+import { generateWAMessageFromContent, proto } from '@whiskeysockets/baileys' 
 
 let handler = async (m, { conn, args }) => {
   let mentionedJid = await m.mentionedJid
@@ -285,25 +287,52 @@ let handler = async (m, { conn, args }) => {
 `
   })
 
-  txt += ``
-await conn.sendMessage(m.chat, { 
-    text: txt,
-    contextInfo: {
-      mentionedJid: [userId],
-      isForwarded: false,
-      externalAdReply: {
-        title: botname,
-        body: textbot,
-        mediaType: 1,
-        mediaUrl: redes,
-        sourceUrl: redes,
-        thumbnail: await (await fetch(banner)).buffer(),
-        showAdAttribution: false,
-        containsAutoReply: true,
-        renderLargerThumbnail: true
+  let msg = generateWAMessageFromContent(m.chat, {
+    viewOnceMessage: {
+      message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: {
+          body: { text: txt },
+          footer: { text: footer },
+          header: {
+            hasMediaAttachment: false
+          },
+          nativeFlowMessage: {
+            buttons: [
+              {
+                "name": "cta_url",
+                "buttonParamsJson": JSON.stringify({
+                  "display_text": "Test %",
+                  "url": redes,
+                  "merchant_url": redes
+                })
+              }
+            ]
+          },
+          contextInfo: {
+            mentionedJid: [userId],
+            isForwarded: false,
+            externalAdReply: {
+              title: botname,
+              body: textbot,
+              mediaType: 1,
+              mediaUrl: redes,
+              sourceUrl: redes,
+              thumbnail: await (await fetch(banner)).buffer(),
+              showAdAttribution: false,
+              containsAutoReply: true,
+              renderLargerThumbnail: true
+            }
+          }
+        }
       }
     }
   }, { quoted: m })
+
+  await conn.relayMessage(m.chat, msg.message, {})
 }
 
 handler.help = ['menu']
