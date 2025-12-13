@@ -278,9 +278,8 @@ let handler = async (m, { conn, args }) => {
 ┃
 `
     section.commands.forEach(([command, description]) => {
-      txt += `┃ ✦ *${command}*
-┃ › ${description}
-┃
+      txt += `┃ ✿ \`${command}\`
+┃ › _${description}_
 `
     })
     txt += `${footer}
