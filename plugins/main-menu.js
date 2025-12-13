@@ -273,7 +273,7 @@ let handler = async (m, { conn, args }) => {
 `
 
   sections.forEach(section => {
-    txt += `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *${section.title}* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+    txt += `╭‿︵${section.title}‿︵╮
 > ${section.emoji} Comandos de *${section.title.replace(/[🛍️📥🎮⚙️🛠️👤👥💕🔞]/g, '').trim()}*.
 ┃
 `
