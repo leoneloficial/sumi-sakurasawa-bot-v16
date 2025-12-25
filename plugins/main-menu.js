@@ -261,7 +261,7 @@ let handler = async (m, { conn, args }) => {
   
   let txt = `> ꕤ ¡Hola! @${userId.split('@')[0]}, Soy ${botname}, ${(conn.user.jid == global.conn.user.jid ? '𝗣𝗿𝗶𝗻𝗰𝗶𝗽𝗮𝗹' : '𝗦𝘂𝗯-𝗕𝗼𝘁')}
 
-> _*Aquí tienes la lista de comandos.*_
+ _*Aquí tienes la lista de comandos.*_
 ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
 │❍ *Usuarios* » ${totalreg.toLocaleString()}
 │❏ *Versión* » ${vs}
