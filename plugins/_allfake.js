@@ -19,7 +19,7 @@ global.mes = d.toLocaleDateString('es', {month: 'long'})
 global.año = d.toLocaleDateString('es', {year: 'numeric'})
 global.tiempo = d.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true})
 
-var canal = 'https://whatsapp.com/channel/0029VbC319y5a23wNL2m4q0g'  
+var canal = 'https://whatsapp.com/channel/0029Vagdmfv1SWt5nfdR4z3w'  
 var comunidad = ''
 var git = 'https://github.com/Ado21/ZeroTwo/'
 var github = 'https://github.com/Ado21/ZeroTwo/' 
