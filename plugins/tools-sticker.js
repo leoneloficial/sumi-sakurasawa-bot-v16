@@ -1,45 +1,131 @@
-import { sticker } from '../lib/sticker.js'
-import uploadFile from '../lib/uploadFile.js'
-import uploadImage from '../lib/uploadImage.js'
-import { webp2png } from '../lib/webp2mp4.js'
+import { exec } from 'child_process'
+import fs from 'fs'
+import util from 'util'
+import { downloadContentFromMessage } from '@whiskeysockets/baileys'
 
-let handler = async (m, { conn, args }) => {
-let stiker = false
-let userId = m.sender
-let packstickers = global.db.data.users[userId] || {}
-let texto1 = packstickers.text1 || global.packsticker
-let texto2 = packstickers.text2 || global.packsticker2
-try {
-let q = m.quoted ? m.quoted : m
-let mime = (q.msg || q).mimetype || q.mediaType || ''
-let txt = args.join(' ')
-if (/webp|image|video/g.test(mime) && q.download) {
-if (/video/.test(mime) && (q.msg || q).seconds > 16)
-return conn.reply(m.chat, '✧ El video no puede durar más de *15 segundos*', m)
-let buffer = await q.download()
-await m.react('🕓')
-let marca = txt ? txt.split(/[\u2022|]/).map(part => part.trim()) : [texto1, texto2]
-stiker = await sticker(buffer, false, marca[0], marca[1])
-} else if (args[0] && isUrl(args[0])) {
-let buffer = await sticker(false, args[0], texto1, texto2)
-stiker = buffer
-} else {
-return conn.reply(m.chat, '❀ Por favor, envía una *imagen* o *video* para hacer un sticker.', m)
-}} catch (e) {
-await conn.reply(m.chat, '⚠︎ Ocurrió un Error: ' + e.message, m)
-await m.react('✖️')
-} finally {
-if (stiker) {
-conn.sendFile(m.chat, stiker, 'sticker.webp', '', m)
-await m.react('✅')
-}}}
+const execAsync = util.promisify(exec)
+
+let handler = async (m, { conn, args, usedPrefix, command }) => {
+  const from = m?.chat || m?.key?.remoteJid
+  if (!from) return
+
+  const opt = (args?.[0] || '').toLowerCase()
+
+  const styles = {
+    circle: 'Círculo (recorte redondo)',
+    crop: 'Recorte centrado 512x512',
+    bw: 'Blanco y negro',
+    invert: 'Invertir colores',
+    blur: 'Desenfoque',
+    pixel: 'Pixelado',
+    sepia: 'Sepia',
+    neon: 'Bordes tipo neón'
+  }
+
+  const listText =
+    `「✦」𝗟𝗶𝘀𝘁𝗮 𝗱𝗲 𝗲𝘀𝘁𝗶𝗹𝗼𝘀 (${usedPrefix + command} <estilo>)\n\n` +
+    Object.keys(styles).map(k => `• ${usedPrefix + command} ${k} — ${styles[k]}`).join('\n') +
+    `\n\n• ${usedPrefix + command} list`
+
+  if (opt === 'list') {
+    return await conn.sendMessage(from, { text: listText }, { quoted: m })
+  }
+
+  const ctx = m?.message?.extendedTextMessage?.contextInfo
+  const quotedMsg = ctx?.quotedMessage?.message || ctx?.quotedMessage || null
+
+  const imageMessage = m?.message?.imageMessage || quotedMsg?.imageMessage || null
+  const videoMessage = m?.message?.videoMessage || quotedMsg?.videoMessage || null
+
+  const isImage = !!imageMessage
+  const isVideo = !!videoMessage
+
+  if (!isImage && !isVideo) {
+    return await conn.sendMessage(
+      from,
+      {
+        text:
+          '「✦」Responde a una *imagen* o *video* para crear el sticker.\n' +
+          `> ✐ Ejemplo » *${usedPrefix + command} circle*\n` +
+          `> ✐ Lista » *${usedPrefix + command} list*`
+      },
+      { quoted: m }
+    )
+  }
+
+  const msg = isImage ? imageMessage : videoMessage
+  const dlType = isImage ? 'image' : 'video'
+
+  const stream = await downloadContentFromMessage(msg, dlType)
+
+  let buffer = Buffer.from([])
+  for await (const chunk of stream) buffer = Buffer.concat([buffer, chunk])
+
+  const ts = Date.now()
+  const input = `./temp_${ts}.${isImage ? 'jpg' : 'mp4'}`
+  const output = `./temp_${ts}.webp`
+
+  await fs.promises.writeFile(input, buffer)
+
+  const style = opt || 'circle'
+  if (style && style !== '' && !styles[style]) {
+    await conn.sendMessage(from, { text: listText }, { quoted: m })
+    if (fs.existsSync(input)) await fs.promises.unlink(input)
+    return
+  }
+
+  const baseContain =
+    'fps=15,' +
+    'scale=512:512:force_original_aspect_ratio=decrease,' +
+    'pad=512:512:(ow-iw)/2:(oh-ih)/2:color=white@0.0'
+
+  const baseCoverCrop =
+    'fps=15,' +
+    'scale=512:512:force_original_aspect_ratio=increase,' +
+    'crop=512:512'
+
+  const geqCircle = "geq=lum='p(X,Y)':a='if(lte(hypot(X-256,Y-256),256),255,0)'"
+
+  const vf =
+    style === 'circle' ? `${baseCoverCrop},format=rgba,${geqCircle}` :
+    style === 'crop' ? baseCoverCrop :
+    style === 'bw' ? `${baseContain},hue=s=0` :
+    style === 'invert' ? `${baseContain},negate` :
+    style === 'blur' ? `${baseContain},gblur=sigma=6` :
+    style === 'pixel' ? `${baseContain},scale=128:128:flags=neighbor,scale=512:512:flags=neighbor` :
+    style === 'sepia' ? `${baseContain},colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131` :
+    style === 'neon' ? `${baseContain},edgedetect=low=0.08:high=0.2` :
+    `${baseCoverCrop},format=rgba,${geqCircle}`
+
+  const ffmpegCmd = isVideo
+    ? `ffmpeg -y -i "${input}" -t 8 -an -vf "${vf}" -loop 0 -fps_mode passthrough "${output}"`
+    : `ffmpeg -y -i "${input}" -an -vf "${vf}" -loop 0 -fps_mode passthrough "${output}"`
+
+  try {
+    await execAsync(ffmpegCmd)
+    const sticker = await fs.promises.readFile(output)
+    await conn.sendMessage(from, { sticker }, { quoted: m })
+  } catch (e) {
+    const err = (e?.stderr || e?.stdout || e?.message || String(e) || '').toString()
+    await conn.sendMessage(
+      from,
+      {
+        text:
+          '「✦」Error creando el sticker.\n\n' +
+          `> ✐ Estilo: *${style}*\n` +
+          `> ✐ ffmpeg: \`${ffmpegCmd}\`\n\n` +
+          `> ✐ Error:\n\`\`\`\n${err.slice(0, 3500)}\n\`\`\``
+      },
+      { quoted: m }
+    )
+  } finally {
+    if (fs.existsSync(input)) await fs.promises.unlink(input)
+    if (fs.existsSync(output)) await fs.promises.unlink(output)
+  }
+}
 
 handler.help = ['sticker']
 handler.tags = ['sticker']
-handler.command = ['s', 'sticker']
+handler.command = ['sticker', 's']
 
 export default handler
-
-const isUrl = (text) => {
-return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)(jpe?g|gif|png)/, 'gi'))
-}
