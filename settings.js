@@ -21,8 +21,8 @@ global.dev = '© 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗯𝘆 𝗔𝗱𝗼, 𝗬𝗼�
 global.author = '❀ 𝗠𝗮𝗱𝗲 𝘄𝗶𝘁𝗵 𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
 global.etiqueta = '𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
 global.currency = '€ 𝖤𝖴𝖱𝖮𝖲'
-global.banner = "https://qu.ax/GnrIS"
-global.icono = "https://files.catbox.moe/hhxpb5.jpg"
+global.banner = "https://qu.ax/GnrIS.jpg"
+global.icono = "https://qu.ax/GnrIS.jpg"
 global.catalogo = fs.readFileSync('./lib/catalogo.jpg')
 
 global.group = "https://chat.whatsapp.com/HaKf6ezcwdbGzmH782eBal"
