@@ -5,8 +5,8 @@ import fs from "fs"
 
 global.botNumber = "" 
 
-global.owner = ["393715279301", "393715279301", "393715279301"]
-global.suittag = ["393715279301"] 
+global.owner = ["50493732693", "584242773183", "51921826291"]
+global.suittag = [""] 
 global.prems = []
 
 global.libreria = "Baileys Multi Device"
@@ -15,23 +15,23 @@ global.sessions = "Sessions/Principal"
 global.jadi = "Sessions/SubBot"
 global.yukiJadibts = true
 
-global.botname = '🤍 sumi sakurasawa 🤍'
-global.textbot = 'ᰔᩚ sumi 𝖡𝗈𝗍'
+global.botname = '✿ 𝖠𝗂𝗄𝗈 𝖡𝗈𝗍'
+global.textbot = 'ᰔᩚ 𝖠𝗂𝗄𝗈 𝖡𝗈𝗍'
 global.dev = '© 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗯𝘆 𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
 global.author = '❀ 𝗠𝗮𝗱𝗲 𝘄𝗶𝘁𝗵 𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
 global.etiqueta = '𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
 global.currency = '€ 𝖤𝖴𝖱𝖮𝖲'
-global.banner = "https://files.catbox.moe/tm96iw.jpg"
-global.icono = "https://files.catbox.moe/tm96iw.jpg"
+global.banner = "https://files.catbox.moe/8obt28.jpg"
+global.icono = "https://files.catbox.moe/hhxpb5.jpg"
 global.catalogo = fs.readFileSync('./lib/catalogo.jpg')
 
-global.group = "https://chat.whatsapp.com/CpvSbnjeibV03OaVhn8bxR"
-global.community = "https://chat.whatsapp.com/CpvSbnjeibV03OaVhn8bxR"
+global.group = "https://chat.whatsapp.com/HaKf6ezcwdbGzmH782eBal"
+global.community = "https://chat.whatsapp.com/G0kXqsteJFU74yrLtg79o6"
 global.channel = "https://whatsapp.com/channel/0029Vb64nWqLo4hb8cuxe23n"
 global.github = "https://github.com/The-King-Destroy/YukiBot-MD"
 global.gmail = "thekingdestroy507@gmail.com"
 global.ch = {
-ch1: "120363324350463849@newsletter"
+ch1: "120363401404146384@newsletter"
 }
 
 global.APIs = {
