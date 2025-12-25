@@ -300,7 +300,7 @@ export async function handler(chatUpdate) {
                 m.plugin = name
 
                 await this.sendPresenceUpdate('composing', m.chat)
-
+                
 
                 global.db.data.users[m.sender].commands++
                 if (chat) {
