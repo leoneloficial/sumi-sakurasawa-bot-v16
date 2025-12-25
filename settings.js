@@ -5,8 +5,8 @@ import fs from "fs"
 
 global.botNumber = "" 
 
-global.owner = ["50493732693", "584242773183", "51921826291"]
-global.suittag = [""] 
+global.owner = ["393715279301", "393715279301", "393715279301"]
+global.suittag = ["393715279301"] 
 global.prems = []
 
 global.libreria = "Baileys Multi Device"
@@ -15,8 +15,8 @@ global.sessions = "Sessions/Principal"
 global.jadi = "Sessions/SubBot"
 global.yukiJadibts = true
 
-global.botname = '✿ 𝖠𝗂𝗄𝗈 𝖡𝗈𝗍'
-global.textbot = 'ᰔᩚ 𝖠𝗂𝗄𝗈 𝖡𝗈𝗍'
+global.botname = '🤍 sumi sakurasawa 🤍'
+global.textbot = 'ᰔᩚ sumi 𝖡𝗈𝗍'
 global.dev = '© 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗯𝘆 𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
 global.author = '❀ 𝗠𝗮𝗱𝗲 𝘄𝗶𝘁𝗵 𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
 global.etiqueta = '𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
