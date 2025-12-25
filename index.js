@@ -1,7 +1,50 @@
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1'
+
+console.log(chalk.bold.magenta('Made With | Itsuki Owners - Star 🌟'));
+console.log(chalk.bold.magenta('Copyright (C) - ') + chalk.bold.red('Itsuki Copyright Wabot 🌸'));
+
+const ramInGB = os.totalmem() / (1024 * 1024 * 1024);
+const freeRamInGB = os.freemem() / (1024 * 1024 * 1024);
+const currentTime = new Date().toLocaleString("es-MX", {
+  timeZone: "America/Mexico_City",
+  hour12: false,
+});
+
+const info =
+  `\n${chalk.bold.cyan('╭─────────────────────────────◉')}\n` +
+  `│ ${chalk.red.bgBlueBright.bold('        🖥 INFORMACIÓN DEL SISTEMA ⚙️        ')}\n` +
+  `│${chalk.magenta('「 💻 」')}${chalk.blue(`SO: ${os.type()}, ${os.release()} - ${os.arch()}`)}\n` +
+  `│${chalk.magenta('「 💾 」')}${chalk.blue(`RAM Total: ${ramInGB.toFixed(2)} GB`)}\n` +
+  `│${chalk.magenta('「 💽 」')}${chalk.blue(`RAM Libre: ${freeRamInGB.toFixed(2)} GB`)}\n` +
+  `${chalk.bold.cyan('╰─────────────────────────────◉')}\n\n` +
+
+  `${chalk.bold.cyan('╭─────────────────────────────◉')}\n` +
+  `│ ${chalk.red.bgGreenBright.bold('        🟢 INFORMACIÓN DEL BOT 🤖      ')}\n` +
+  `│${chalk.magenta('「 🦋 」')}${chalk.red('Nombre » Itsuki Nakano V5')}\n` +
+  `│${chalk.magenta('「 🌱 」')}${chalk.red('Versión » ^NewUpdate|V5')}\n` +
+  `│${chalk.magenta('「 🍃 」')}${chalk.red('Descripción » Bot Actualizado Sistema Remodeled 🧋')}\n` +
+  `│${chalk.magenta('「 👑 」')}${chalk.red('Autor » leoDev.xyz')}\n` +
+  `${chalk.bold.cyan('╰─────────────────────────────◉')}\n\n` +
+
+  `${chalk.bold.cyan('╭─────────────────────────────◉')}\n` +
+  `│ ${chalk.red.bgMagenta.bold('        ⏰ HORA ACTUAL        ')}\n` +
+  `│${chalk.magenta('「 🕒 」')}${chalk.cyan(currentTime)}\n` +
+  `${chalk.bold.cyan('╰─────────────────────────────◉')}\n\n` +
+
+  `${chalk.bold.magenta('╭─────────────────────────────◉')}\n` +
+  `│ ${chalk.red.bgCyan.bold('        🔗 ISUKI - VINCULACIÓN       ')}\n` +
+  `│${chalk.magenta('「 🪷 」')}${chalk.cyan('Método de conexión:')}\n` +
+  `│${chalk.magenta('「 1️⃣ 」')}${chalk.green('Código QR')}\n` +
+  `│${chalk.magenta('「 2️⃣ 」')}${chalk.yellow('Código de texto de 8 dígitos')}\n` +
+  `${chalk.bold.magenta('╰─────────────────────────────◉')}\n`;
+
+console.log(info);
+
+console.log(chalk.magentaBright('\n🌷 I N I C I A N D O - V E R S I O N  V5...'))
+
+// ======================== ITSUKI INDEX MDFC ========================
 import './settings.js'
 import './plugins/_allfake.js'
-import cfonts from 'cfonts'
 import { createRequire } from 'module'
 import { fileURLToPath, pathToFileURL } from 'url'
 import { platform } from 'process'
@@ -27,22 +70,12 @@ const phoneUtil = PhoneNumberUtil.getInstance()
 const { DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser } = await import('@whiskeysockets/baileys')
 import readline, { createInterface } from 'readline'
 import NodeCache from 'node-cache'
+import os from 'os'
 const { CONNECTING } = ws
 const { chain } = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 5003
 
-let { say } = cfonts
-console.log(chalk.magentaBright('\n❀ Iniciando...'))
-say('Yuki Suou', {
-font: 'simple',
-align: 'left',
-gradient: ['green', 'white']
-})
-say('Made with love by Destroy', {
-font: 'console',
-align: 'center',
-colors: ['cyan', 'magenta', 'yellow']
-})
+// F I N...
 protoType()
 serialize()
 
@@ -106,13 +139,18 @@ let opcion
 if (methodCodeQR) {
 opcion = '1'
 }
+
+// AQUÍ ESTÁ LA PARTE SIMPLIFICADA QUE PEDISTE
 if (!methodCodeQR && !methodCode && !fs.existsSync(`./${sessions}/creds.json`)) {
-do {
-opcion = await question(colors("Seleccione una opción:\n") + qrOption("1. Con código QR\n") + textOption("2. Con código de texto de 8 dígitos\n--> "))
-if (!/^[1-2]$/.test(opcion)) {
-console.log(chalk.bold.redBright(`No se permiten numeros que no sean 1 o 2, tampoco letras o símbolos especiales.`))
-}} while (opcion !== '1' && opcion !== '2' || fs.existsSync(`./${sessions}/creds.json`))
+  do {
+    opcion = await question(chalk.bold.greenBright('Seleccione una opción (1-2): '));
+
+    if (!/^[1-2]$/.test(opcion)) {
+      console.log(chalk.bold.redBright('Solo se permiten los números 1 o 2'));
+    }
+  } while (opcion !== '1' && opcion !== '2' || fs.existsSync(`./${sessions}/creds.json`))
 }
+
 console.info = () => {}
 const connectionOptions = {
 logger: pino({ level: 'silent' }),
@@ -154,7 +192,8 @@ if (!!phoneNumber) {
 addNumber = phoneNumber.replace(/[^0-9]/g, '')
 } else {
 do {
-phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(`[ ✿ ]  Por favor, Ingrese el número de WhatsApp.\n${chalk.bold.magentaBright('---> ')}`)))
+// AQUÍ ESTÁ LA LÍNEA QUE PEDISTE
+phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(`🌿 Por favor, Ingrese el número de WhatsApp.\n${chalk.bold.magentaBright('---> ')}`)))
 phoneNumber = phoneNumber.replace(/\D/g, '')
 if (!phoneNumber.startsWith('+')) {
 phoneNumber = `+${phoneNumber}`
@@ -164,12 +203,12 @@ addNumber = phoneNumber.replace(/\D/g, '')
 setTimeout(async () => {
 let codeBot = await conn.requestPairingCode(addNumber)
 codeBot = codeBot.match(/.{1,4}/g)?.join("-") || codeBot
-console.log(chalk.bold.white(chalk.bgMagenta(`[ ✿ ]  Código:`)), chalk.bold.white(chalk.white(codeBot)))
+console.log(chalk.bold.white(chalk.bgMagenta(`🔒 Código:`)), chalk.bold.white(chalk.white(codeBot)))
 }, 3000)
 }}}}
 conn.isInit = false
 conn.well = false
-conn.logger.info(`[ ✿ ]  H E C H O\n`)
+conn.logger.info(`[ 🌴 ]  H E C H O\n`)
 if (!opts['test']) {
 if (global.db) setInterval(async () => {
 if (global.db.data) await global.db.write()
@@ -191,13 +230,13 @@ global.timestamp.connect = new Date()
 if (global.db.data == null) loadDatabase()
 if (update.qr != 0 && update.qr != undefined || methodCodeQR) {
 if (opcion == '1' || methodCodeQR) {
-console.log(chalk.green.bold(`[ ✿ ]  Escanea este código QR`))
+console.log(chalk.green.bold(`[ 🔰 ]  Escanea este código QR`))
 }}
 if (connection === "open") {
 const userJid = jidNormalizedUser(conn.user.id)
 const userName = conn.user.name || conn.user.verifiedName || "Desconocido"
 await joinChannels(conn)
-console.log(chalk.green.bold(`[ ✿ ]  Conectado a: ${userName}`))
+console.log(chalk.green.bold(`🚀 Conectado exitosamente ✅️ a  : ${userName}`))
 }
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
 if (connection === "close") {
@@ -255,9 +294,9 @@ global.rutaJadiBot = join(__dirname, `./${jadi}`)
 if (global.yukiJadibts) {
 if (!existsSync(global.rutaJadiBot)) {
 mkdirSync(global.rutaJadiBot, { recursive: true })
-console.log(chalk.bold.cyan(`ꕥ La carpeta: ${jadi} se creó correctamente.`))
+console.log(chalk.bold.cyan(`📂 La carpeta: ${jadi} se creó correctamente.✅️`))
 } else {
-console.log(chalk.bold.cyan(`ꕥ La carpeta: ${jadi} ya está creada.`))
+console.log(chalk.bold.cyan(`📂 La carpeta: ${jadi} ya está creada.✅️`))
 }
 const readRutaJadiBot = readdirSync(rutaJadiBot)
 if (readRutaJadiBot.length > 0) {
@@ -344,8 +383,8 @@ unlinkSync(filePath)})
 console.log(chalk.gray(`→ Archivos de la carpeta TMP eliminados`))
 } catch {
 console.log(chalk.gray(`→ Los archivos de la carpeta TMP no se pudieron eliminar`))
-}}, 30 * 1000) 
-_quickTest().catch(console.error)
+}}, 30 * 1000)
+
 async function isValidPhoneNumber(number) {
 try {
 number = number.replace(/\s+/g, '')
