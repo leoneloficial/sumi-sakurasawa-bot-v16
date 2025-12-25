@@ -15,11 +15,11 @@ global.sessions = "Sessions/Principal"
 global.jadi = "Sessions/SubBot"
 global.yukiJadibts = true
 
-global.botname = '✿ 𝖠𝗂𝗄𝗈 𝖡𝗈𝗍'
-global.textbot = 'ᰔᩚ 𝖠𝗂𝗄𝗈 𝖡𝗈𝗍'
-global.dev = '© 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗯𝘆 𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
-global.author = '❀ 𝗠𝗮𝗱𝗲 𝘄𝗶𝘁𝗵 𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
-global.etiqueta = '𝗔𝗱𝗼, 𝗬𝗼𝘀𝘂𝗲'
+global.botname = '🤍̶۫̄͟Ⓢ︎𓏲S͟u͟m͟m͟i͟𓍲̈͜𝗨̴ᥣ̥𝗍̈rᥲ̄𓊓̵̬𝐁o̸🤍̶۫̄͟─'
+global.textbot = '🤍 sumi 🤍'
+global.dev = ''
+global.author = ''
+global.etiqueta = ''
 global.currency = '€ 𝖤𝖴𝖱𝖮𝖲'
 global.banner = "https://files.catbox.moe/hqflu9.jpg"
 global.icono = "https://files.catbox.moe/tm96iw.jpg"
