@@ -261,12 +261,12 @@ let handler = async (m, { conn, args }) => {
   
   let txt = `> ꕤ ¡Hola! @${userId.split('@')[0]}, Soy ${botname}, ${(conn.user.jid == global.conn.user.jid ? '*PRINCIPAL*  🅥' : '*SUBB-PREM* 🅑'')}
 
- _*Aquí tienes la lista de comandos.*_
+ *Aquí tienes la lista de comandos.*
 ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-│❍ *Usuarios* » ${totalreg.toLocaleString()}
+│✎ *Usuarios* » ${totalreg.toLocaleString()}
 │❏ *Versión* » ${vs}
 │❀ *Plugins* » ${totalCommands}
-│★ *Librería* » ${libreria}
+│🜸 *Librería* » ${libreria}
 ╰ׅ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
 `
 
