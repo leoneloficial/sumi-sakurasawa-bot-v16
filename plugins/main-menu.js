@@ -259,14 +259,14 @@ let handler = async (m, { conn, args }) => {
 
   const footer = `*꒷꒦︶꒷꒦︶꒷꒦︶꒷꒦︶꒷꒦︶꒷꒦*`
   
-  let txt = `> ꕤ ¡Hola! @${userId.split('@')[0]}, Soy ${botname}, ${(conn.user.jid == global.conn.user.jid ? '*PRINCIPAL*  🅥' : '*SUBB-PREM* 🅑'')}
+  let txt = `> ꕤ ¡Hola! @${userId.split('@')[0]}, Soy ${botname}, ${(conn.user.jid == global.conn.user.jid ? '𝗣𝗿𝗶𝗻𝗰𝗶𝗽𝗮𝗹' : '𝗦𝘂𝗯-𝗕𝗼𝘁')}
 
- *Aquí tienes la lista de comandos.*
+> _*Aquí tienes la lista de comandos.*_
 ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-│✎ *Usuarios* » ${totalreg.toLocaleString()}
+│❍ *Usuarios* » ${totalreg.toLocaleString()}
 │❏ *Versión* » ${vs}
 │❀ *Plugins* » ${totalCommands}
-│🜸 *Librería* » ${libreria}
+│★ *Librería* » ${libreria}
 ╰ׅ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
 `
 
@@ -311,8 +311,8 @@ let handler = async (m, { conn, args }) => {
                 "name": "cta_url",
                 "buttonParamsJson": JSON.stringify({
                   "display_text": "✎ 𝖦𝗋𝗎𝗉𝗈 𝖮𝖿𝗂𝖼𝗂𝖺𝗅",
-                  "url": "https://chat.whatsapp.com/CpvSbnjeibV03OaVhn8bxR",
-                  "merchant_url": "https://chat.whatsapp.com/CpvSbnjeibV03OaVhn8bxR"
+                  "url": "https://chat.whatsapp.com/L8wHHYu0pI10fCs3cQ2DP1?mode=hqrt3",
+                  "merchant_url": "https://chat.whatsapp.com/L8wHHYu0pI10fCs3cQ2DP1?mode=hqrt3"
                 })
               }
             ]
